@@ -39,7 +39,12 @@ export async function uploadPhoto(file, prompt, ownerId = null) {
 
 // Fetch all photos
 export async function fetchPhotos() {
-  const res = await databases.listDocuments(DATABASE_ID, COLLECTION_ID);
+  const res = await databases.listDocuments(
+    DATABASE_ID,
+    COLLECTION_ID,
+    [],
+    1000
+  );
 
   return res.documents.map((doc) => ({
     id: doc.$id,
