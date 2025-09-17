@@ -2,12 +2,13 @@
 import {
   storage,
   databases,
-  ID_HELPER,
+  ID_HELPER, // or just import { ID } directly from "appwrite"
   APPWRITE_ENDPOINT,
   BUCKET_ID,
   DATABASE_ID,
   COLLECTION_ID,
 } from "../appwrite";
+import { Query } from "appwrite";
 
 // Upload a photo + prompt
 export async function uploadPhoto(file, prompt, ownerId = null) {
@@ -18,7 +19,7 @@ export async function uploadPhoto(file, prompt, ownerId = null) {
   // 1. Upload file to storage
   const fileRes = await storage.createFile(BUCKET_ID, ID_HELPER.unique(), file);
 
-  // Remove extra whitespace from prompt
+  // Clean whitespace
   const cleanedPrompt = prompt.replace(/\s+/g, " ").trim();
 
   // 2. Save metadata in DB
@@ -37,19 +38,24 @@ export async function uploadPhoto(file, prompt, ownerId = null) {
   return { fileRes, doc };
 }
 
-// Fetch all photos
-export async function fetchPhotos() {
-  const res = await databases.listDocuments(
-    DATABASE_ID,
-    COLLECTION_ID,
-    [],
-    1000
-  );
+// Fetch photos with pagination
+export async function fetchPhotos(limit = 25, offset = 0) {
+  try {
+    const res = await databases.listDocuments(
+      DATABASE_ID,
+      COLLECTION_ID,
+      [Query.limit(limit), Query.offset(offset), Query.orderDesc("createdAt")]
+    );
 
-  return res.documents.map((doc) => ({
-    id: doc.$id,
-    prompt: doc.prompt,
-    fileId: doc.fileId,
-    url: `${APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${doc.fileId}/view?project=${import.meta.env.VITE_APPWRITE_PROJECT_ID}`,
-  }));
+    return res.documents.map((doc) => ({
+      id: doc.$id,
+      prompt: doc.prompt,
+      fileId: doc.fileId,
+      url: `${APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${doc.fileId}/view?project=${import.meta.env.VITE_APPWRITE_PROJECT_ID}`,
+      createdAt: doc.createdAt,
+    }));
+  } catch (err) {
+    console.error("Error fetching photos:", err);
+    return [];
+  }
 }
