@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import UploadForm from "./components/UploadForm";
+import UploadForm from "./components/UploadForm";
 import Gallery from "./components/Gallery";
 import "./App.css";
 
@@ -32,7 +32,7 @@ function App() {
           {notification.message}
         </div>
       )}
-      {/* <UploadForm onUploaded={handleUploaded} /> */}
+      <UploadForm onUploaded={handleUploaded} />
       {/* Key forces re-render of Gallery */}
       <Gallery key={refreshKey} />
     </div>
