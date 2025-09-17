@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
+body {
+  font-family: "Inter", "Poppins", "Fira Code", sans-serif;
+  background: #181818;
+  color: #fff;
+}
+
 summary::-webkit-details-marker {
-  display: none
+  display: none;
 }
 
 .checker-background::before {
@@ -11,10 +17,19 @@ summary::-webkit-details-marker {
   right: 0;
   bottom: 0;
   left: 0;
-  background-image: linear-gradient(#e6e6e690 1px, transparent 1px),
-  linear-gradient(90deg, #e6e6e690 1px, transparent 1px);
+  background-image:
+    linear-gradient(#222 1px, transparent 1px),
+    linear-gradient(90deg, #222 1px, transparent 1px);
   background-size: 3.7em 3.7em;
   mask-image: radial-gradient(ellipse at 50% 40%, black 0%, transparent 55%);
   z-index: -1;
   background-position-x: center;
+}
+
+.bg-card {
+  background: linear-gradient(135deg, #232323 0%, #181818 100%);
+}
+
+.shadow-card {
+  box-shadow: 0 4px 24px 0 rgba(34, 34, 34, 0.18);
 }
