@@ -1,0 +1,18 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pnxGradient" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A855F7"></stop>
+      <stop offset="1" stop-color="#6366F1"></stop>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="24" fill="#0F172A"></rect>
+
+  <path d="M36 92V36H68C80 36 88 42 88 54C88 64 80 70 70 70H48V92H36Z" fill="url(#pnxGradient)"></path>
+
+  <circle cx="96" cy="36" r="6" fill="url(#pnxGradient)"></circle>
+  <circle cx="96" cy="92" r="6" fill="url(#pnxGradient)"></circle>
+
+  <line x1="88" y1="58" x2="96" y2="36" stroke="url(#pnxGradient)" stroke-width="3"></line>
+  <line x1="88" y1="70" x2="96" y2="92" stroke="url(#pnxGradient)" stroke-width="3"></line>
+</svg>
