@@ -1,26 +1,71 @@
-# React starter kit with Appwrite
+# PromptsFor_ImageGen
 
-Kickstart your React development with this ready-to-use starter project integrated with [Appwrite](https://www.appwrite.io)
+PromptFor_ImageGen is a React + Vite front-end starter tailored for building image-generation galleries with Appwrite. It ships with auth, upload, gallery browsing, and profile pages wired through React Router and an Appwrite SDK–ready context.
 
-## 🚀Getting started
+## Live Demo https://imagegenprompt.onrender.com/
+## Features
+- 🔐 **Authentication flow** (login, profile, password reset screens).
+- 🖼️ **Image gallery** with home and full-gallery views.
+- ⬆️ **Upload page(needs passkey)** scaffold to send new images/prompts.
+- 🧭 **Layout shell** with routed pages using React Router v7.
+- 🎨 **Tailwind CSS** styling plus Lucide icons and Framer Motion-ready animations.
+- ☁️ **Appwrite SDK** included for backend services (auth, storage, DB).
 
-###
-Clone the Project
-Clone this repository to your local machine using Git:
+## Tech Stack
+- **Frontend:** React 19, Vite 6, React Router 7
+- **UI/UX:** Tailwind CSS 4, Lucide icons, Framer Motion
+- **Backend SDK:** Appwrite JavaScript SDK
+- **Tooling:** ESLint 9, Prettier 3
 
-`git clone https://github.com/appwrite/starter-for-react`
+## Project Structure
+- `src/`
+  - `App.jsx` — routes and providers
+  - `main.jsx` — app bootstrap
+  - `components/` — layout & shared UI
+  - `pages/` — Home, FullGallery, Upload, Auth, Profile, ResetPassword
+  - `context/` — AuthContext integrating Appwrite SDK
+- `public/` — static assets
+- `vite.config.js` — Vite configuration
+- `eslint.config.js` — lint rules
 
-## 🛠️ Development guid
-1. **Configure Appwrite**<br/>
-   Navigate to `.env` and update the values to match your Appwrite project credentials.
-2. **Customize as needed**<br/>
-   Modify the starter kit to suit your app's requirements. Adjust UI, features, or backend
-   integrations as per your needs.
-3. **Install dependencies**<br/>
-   Run `npm install` to install all dependencies.
-4. **Run the app**<br/>
-   Start the project by running `npm run dev`.
+## Getting Started
+```bash
+# 1) Install deps
+npm install
 
-## 💡 Additional notes
-- This starter project is designed to streamline your React development with Appwrite.
-- Refer to the [Appwrite documentation](https://appwrite.io/docs) for detailed integration guidance.
+# 2) Run dev server (http://localhost:5173 by default)
+npm run dev
+
+# 3) Production build
+npm run build
+
+# 4) Preview production build
+npm run preview
+```
+
+### Environment Variables
+Create a `.env` (or `.env.local`) with your Appwrite settings:
+```
+VITE_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+VITE_APPWRITE_PROJECT=<your-project-id>
+VITE_APPWRITE_DATABASE_ID=<db-id>
+VITE_APPWRITE_COLLECTION_ID=<collection-id>
+VITE_APPWRITE_BUCKET_ID=<bucket-id>
+```
+Adjust keys to match the Appwrite resources you use (auth, storage, database).
+
+## Available Scripts
+- `npm run dev` — start Vite dev server
+- `npm run build` — production build
+- `npm run preview` — preview built assets
+- `npm run lint` — run ESLint
+
+## Deployment
+- Build with `npm run build`; deploy `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, etc.).
+- Ensure environment variables are provided at build time (VITE_* vars must be exposed).
+
+## License
+This project is licensed under the terms of the license in [`LICENSE`](LICENSE).
+
+## Contributing
+Issues and PRs are welcome! Open an issue to discuss improvements or new features.
