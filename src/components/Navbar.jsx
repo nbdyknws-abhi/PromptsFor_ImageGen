@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Menu, X, Image, Sparkles, User, Lock } from "lucide-react";
+import { Menu, X, Image, Sparkles, Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,24 +15,13 @@ const Navbar = () => {
     { name: "Generate", icon: Sparkles, href: "/generate" },
   ];
 
-  if (user) {
-    navItems.push({ name: "Profile", icon: User, href: "/profile" });
-  } else {
-    navItems.push({ name: "Login", icon: Lock, href: "/auth" });
-  }
-
   const isActive = (path) => location.pathname === path;
 
   return (
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        duration: 0.8,
-      }}
+      transition={{ type: "spring", stiffness: 100, damping: 20, duration: 0.8 }}
       className="fixed top-0 left-0 right-0 z-50 px-4 py-3 md:px-8"
     >
       <div className="max-w-7xl mx-auto">
@@ -47,7 +37,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -60,15 +50,39 @@ const Navbar = () => {
               >
                 <item.icon
                   size={16}
-                  className={`${isActive(item.href) ? "text-indigo-400" : "group-hover:text-indigo-400 transition-colors"}`}
+                  className={isActive(item.href) ? "text-indigo-400" : ""}
                 />
                 {item.name}
               </Link>
             ))}
+
+            {/* Profile / Login */}
+            {user ? (
+              <Link
+                to="/profile"
+                className={`flex items-center gap-2 text-sm font-medium tracking-wide transition-colors ${
+                  isActive("/profile") ? "text-white" : "text-gray-400 hover:text-white"
+                }`}
+              >
+                <UserAvatar user={user} size={28} />
+                <span>{user.name?.split(" ")[0] || "Profile"}</span>
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                className={`flex items-center gap-2 text-sm font-medium tracking-wide transition-colors ${
+                  isActive("/auth") ? "text-white" : "text-gray-400 hover:text-white"
+                }`}
+              >
+                <Lock size={16} className={isActive("/auth") ? "text-indigo-400" : ""} />
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-3">
+            {user && <UserAvatar user={user} size={32} />}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-300 hover:text-white p-2"
@@ -99,13 +113,34 @@ const Navbar = () => {
                       : "hover:bg-white/5 text-gray-200"
                   }`}
                 >
-                  <item.icon
-                    size={18}
-                    className={isActive(item.href) ? "text-indigo-400" : ""}
-                  />
+                  <item.icon size={18} className={isActive(item.href) ? "text-indigo-400" : ""} />
                   <span className="font-medium">{item.name}</span>
                 </Link>
               ))}
+
+              {user ? (
+                <Link
+                  to="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                    isActive("/profile") ? "bg-white/10 text-white" : "hover:bg-white/5 text-gray-200"
+                  }`}
+                >
+                  <UserAvatar user={user} size={24} />
+                  <span className="font-medium">Profile</span>
+                </Link>
+              ) : (
+                <Link
+                  to="/auth"
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                    isActive("/auth") ? "bg-white/10 text-white" : "hover:bg-white/5 text-gray-200"
+                  }`}
+                >
+                  <Lock size={18} className={isActive("/auth") ? "text-indigo-400" : ""} />
+                  <span className="font-medium">Login</span>
+                </Link>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

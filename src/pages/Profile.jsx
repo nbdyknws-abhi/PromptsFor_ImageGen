@@ -6,10 +6,11 @@ import PhotoCard from "../components/PhotoCard";
 import ImageModal from "../components/ImageModal";
 import { useNavigate } from "react-router-dom";
 import {
-  LogOut, Heart, User, Loader2, Image as ImageIcon,
+  LogOut, Heart, Loader2, Image as ImageIcon,
   Clock, Download, Trash2, Sparkles, AlertTriangle,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import UserAvatar from "../components/UserAvatar";
 
 export default function Profile() {
   const { user, logout, saved, loading: authLoading } = useAuth();
@@ -124,9 +125,7 @@ export default function Profile() {
         className="glass-panel p-8 rounded-3xl relative overflow-hidden"
       >
         <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
-          <div className="w-24 h-24 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <User size={48} className="text-white" />
-          </div>
+          <UserAvatar user={user} size={96} className="shadow-lg shadow-indigo-500/20 border-2 border-white/10" />
 
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-3xl font-bold text-white mb-2">{user.name}</h1>

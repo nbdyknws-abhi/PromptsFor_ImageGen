@@ -1,11 +1,6 @@
-import { Client, Account, Databases, Storage, ID } from "appwrite";
+import { Client, Account, Databases, Storage, ID, Avatars } from "appwrite";
 
 const client = new Client();
-
-console.log("Appwrite Config:", {
-  endpoint: import.meta.env.VITE_APPWRITE_ENDPOINT,
-  project: import.meta.env.VITE_APPWRITE_PROJECT_ID,
-});
 
 client
   .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT)
@@ -14,6 +9,7 @@ client
 const account = new Account(client);
 const databases = new Databases(client);
 const storage = new Storage(client);
+const avatars = new Avatars(client);
 const ID_HELPER = ID; // use ID_HELPER.unique() when needed
 const BUCKET_ID = import.meta.env.VITE_APPWRITE_BUCKET_ID;
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
@@ -25,6 +21,7 @@ export {
   account,
   databases,
   storage,
+  avatars,
   ID_HELPER,
   BUCKET_ID,
   DATABASE_ID,
