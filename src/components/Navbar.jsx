@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, Image, Upload as UploadIcon, User, Lock } from "lucide-react";
+import { Menu, X, Image, Sparkles, User, Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Gallery", icon: Image, href: "/gallery" },
-    { name: "Upload", icon: UploadIcon, href: "/upload" },
+    { name: "Generate", icon: Sparkles, href: "/generate" },
   ];
 
   if (user) {

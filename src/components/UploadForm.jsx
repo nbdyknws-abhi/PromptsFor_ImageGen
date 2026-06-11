@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { uploadPhoto } from "../api/photos";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
@@ -13,16 +13,22 @@ import {
 
 const PASSKEY = import.meta.env.VITE_UPLOAD_PASSKEY;
 
-export default function UploadForm({ onUploaded }) {
+export default function UploadForm({ onUploaded, prefilledPasskey = "" }) {
   const [file, setFile] = useState(null);
   const [prompt, setPrompt] = useState("");
-  const [passkey, setPasskey] = useState("");
+  const [passkey, setPasskey] = useState(prefilledPasskey || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const fileInputRef = useRef();
 
   const { user } = useAuth();
+
+  useEffect(() => {
+    if (prefilledPasskey) {
+      setPasskey(prefilledPasskey);
+    }
+  }, [prefilledPasskey]);
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -63,7 +69,7 @@ export default function UploadForm({ onUploaded }) {
       await uploadPhoto(file, prompt, user?.$id);
       setFile(null);
       setPrompt("");
-      setPasskey("");
+      setPasskey(prefilledPasskey || "");
       setSuccess("Upload successful!");
       onUploaded && onUploaded();
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -187,25 +193,27 @@ export default function UploadForm({ onUploaded }) {
           </div>
 
           {/* Passkey Input */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-400 ml-1">
-              Access Key
-            </label>
-            <div className="relative">
-              <Key
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
-                size={18}
-              />
-              <input
-                type="password"
-                placeholder="Enter admin passkey"
-                value={passkey}
-                onChange={(e) => setPasskey(e.target.value)}
-                className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all"
-                autoComplete="new-password"
-              />
+          {!prefilledPasskey && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-400 ml-1">
+                Access Key
+              </label>
+              <div className="relative">
+                <Key
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+                  size={18}
+                />
+                <input
+                  type="password"
+                  placeholder="Enter admin passkey"
+                  value={passkey}
+                  onChange={(e) => setPasskey(e.target.value)}
+                  className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all"
+                  autoComplete="new-password"
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Status Messages */}
           <AnimatePresence>

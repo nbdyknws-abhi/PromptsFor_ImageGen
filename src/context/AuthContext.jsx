@@ -60,22 +60,31 @@ export const AuthProvider = ({ children }) => {
   };
 
   const toggleSavePhoto = async (photoId) => {
-    if (!user) return { success: false, error: "Must be logged in" };
+    let currentUser = user;
+    let currentSaved = saved;
+    if (!currentUser) {
+      try {
+        currentUser = await account.get();
+        const prefs = await account.getPrefs();
+        currentSaved = prefs.saved || [];
+      } catch (e) {
+        return { success: false, error: "Must be logged in" };
+      }
+    }
 
-    // Optimistic Update
-    const isCurrentlySaved = saved.includes(photoId);
+    const isCurrentlySaved = currentSaved.includes(photoId);
     const newSaved = isCurrentlySaved
-      ? saved.filter((id) => id !== photoId)
-      : [...saved, photoId];
+      ? currentSaved.filter((id) => id !== photoId)
+      : [...currentSaved, photoId];
 
     setSaved(newSaved);
 
     try {
-      await account.updatePrefs({ saved: newSaved });
+      const prefs = await account.getPrefs();
+      await account.updatePrefs({ ...prefs, saved: newSaved });
       return { success: true, saved: newSaved };
     } catch (error) {
-      // Rollback on error
-      setSaved(saved);
+      setSaved(currentSaved);
       return { success: false, error: error.message };
     }
   };
