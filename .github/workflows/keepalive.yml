@@ -1,0 +1,15 @@
+name: 24/7 Server Keep-Alive
+
+on:
+  schedule:
+    # Runs every 10 minutes (* /10 * * *) to prevent free tier sleep
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Live Server (Zero-Load HEAD request)
+        run: |
+          curl -s -I -o /dev/null -w "%{http_code}\n" https://imagegenprompt.onrender.com/ || true
